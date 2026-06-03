@@ -20,25 +20,53 @@
         .bg-offline { background-color: #80848e; }
         .text-online { color: #23a559; }
         .text-offline { color: #80848e; }
+        
+        #mobile-menu {
+            transition: max-height 0.3s ease-in-out, opacity 0.2s ease-in-out;
+        }
+        #mobile-menu.hidden-mobile {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+        @media (min-width: 768px) {
+            #mobile-menu.hidden-mobile {
+                max-height: none;
+                opacity: 1;
+                overflow: visible;
+            }
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col md:flex-row">
 
-    <nav class="discord-sidebar w-full md:w-72 p-6 flex md:flex-col border-b md:border-b-0 md:border-r border-[#1e1f22]">
-        <div class="flex items-center gap-3 mb-10">
-            <div class="relative">
-                <img src="https://cdn.discordapp.com/icons/706905953320304772/13e9bceb07fec376de1b1af835aca51a.png?size=1024" 
-                     alt="S-Global Icon" 
-                     class="w-14 h-14 rounded-2xl shadow-xl border border-white/10 shadow-[#000000]/40">
-                <div class="absolute -top-1 -right-1 flex h-4 w-4">
-                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                    <span class="relative inline-flex rounded-full h-4 w-4 bg-[#5865f2]"></span>
+    <nav class="discord-sidebar w-full md:w-72 p-4 md:p-6 flex flex-col border-b md:border-b-0 md:border-r border-[#1e1f22] sticky top-0 z-50 md:relative">
+        <div class="flex items-center justify-between md:mb-10">
+            <div class="flex items-center gap-3">
+                <div class="relative">
+                    <img src="https://cdn.discordapp.com/icons/706905953320304772/13e9bceb07fec376de1b1af835aca51a.png?size=1024" 
+                         alt="S-Global Icon" 
+                         class="w-10 h-10 md:w-14 md:h-14 rounded-2xl shadow-xl border border-white/10 shadow-[#000000]/40">
+                    <div class="absolute -top-1 -right-1 flex h-3 w-3 md:h-4 md:w-4">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-3 w-3 md:h-4 md:w-4 bg-[#5865f2]"></span>
+                    </div>
+                </div>
+                <div>
+                    <h1 class="font-bold text-white text-lg md:text-xl tracking-tight leading-none">SGC</h1>
+                    <p class="text-[9px] md:text-[10px] text-[#949ba4] font-bold uppercase tracking-widest mt-1">S-Global Chat</p>
                 </div>
             </div>
-            <div>
-                <h1 class="font-bold text-white text-xl tracking-tight leading-none">SGC</h1>
-                <p class="text-[10px] text-[#949ba4] font-bold uppercase tracking-widest mt-1">いろんなBotで参加できる<br/>グローバルチャット</p>
-            </div>
+            
+            <button id="menu-toggle" class="md:hidden text-[#b5bac1] hover:text-white p-2">
+                <i class="fa-solid fa-bars text-xl"></i>
+            </button>
+        </div>
+
+        <div id="mobile-menu" class="hidden-mobile mt-4 md:mt-0">
+            <a href="https://sgc.sharkbot.me/counter" class="flex items-center gap-3 px-3 py-2 rounded-md text-[#b5bac1] hover:text-white hover:bg-[#35373c] transition-colors">
+                <span class="font-medium">統計</span>
+            </a>
         </div>
     </nav>
 
@@ -50,12 +78,12 @@
                 <span class="text-[#b5bac1] text-sm font-bold italic">Super Global Chat</span>
             </div>
             <h2 class="text-4xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
-                多種多様なBotが、<br><span class="text-[#5865f2]">一つの世界</span>を創る。
+                スーパーグローバルチャット
             </h2>
             <p class="text-[#b5bac1] text-lg max-w-3xl leading-relaxed">
-                Super Global Chat (SGC) は、特定のBotを強制しません。
-                参加サーバーは、<strong>使い慣れたBotや好みのBotを選んでネットワークに接続</strong>できます。
-                どのBotから発言しても、全てのBotにメッセージが駆け巡ります。
+                Super Global Chat (SGC) は、様々なBotから接続できる<br>
+                Discordのグローバルチャットです。<br>
+                どのBotから発言してもすべてのBotで同じ内容を受信できます。
             </p>
         </header>
 
@@ -243,6 +271,24 @@
         setInterval(fetchStatus, 60000);
         document.getElementById('fetchStatus').addEventListener('click', () => {
             fetchStatus();
+        });
+
+        // Mobile menu toggle
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = menuToggle.querySelector('i');
+
+        menuToggle.addEventListener('click', () => {
+            const isHidden = mobileMenu.classList.contains('hidden-mobile');
+            if (isHidden) {
+                mobileMenu.classList.remove('hidden-mobile');
+                menuIcon.classList.remove('fa-bars');
+                menuIcon.classList.add('fa-xmark');
+            } else {
+                mobileMenu.classList.add('hidden-mobile');
+                menuIcon.classList.remove('fa-xmark');
+                menuIcon.classList.add('fa-bars');
+            }
         });
     </script>
 </body>
